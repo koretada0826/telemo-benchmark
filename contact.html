@@ -79,36 +79,10 @@
       color: #C5A55A;
     }
 
-    /* Progress indicator */
-    .listen-progress {
-      text-align: center;
-      margin: 32px 0;
-      padding: 20px;
-      background: #111;
-      border-radius: 12px;
-      border: 1px solid #222;
-    }
-    .listen-progress .count {
-      font-size: 32px;
-      font-weight: 700;
-      color: #C5A55A;
-    }
-    .listen-progress .label {
-      font-size: 14px;
-      color: #999;
-      margin-top: 4px;
-    }
-
     /* Form Section */
     .form-section {
-      opacity: 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: opacity 0.6s ease, max-height 0.6s ease;
-    }
-    .form-section.visible {
       opacity: 1;
-      max-height: 2000px;
+      margin-top: 32px;
     }
     .form-header {
       text-align: center;
@@ -283,13 +257,7 @@
     <div class="audio-status" id="status2">未再生</div>
   </div>
 
-  <!-- Progress -->
-  <div class="listen-progress">
-    <div class="count" id="listenCount">0 / 2</div>
-    <div class="label">音声を聞き終えるとフォームが表示されます</div>
-  </div>
-
-  <!-- Contact Form (hidden until both audios finish) -->
+  <!-- Contact Form -->
   <div class="form-section" id="formSection">
     <div class="form-header">
       <h2>無料相談する</h2>
@@ -352,36 +320,17 @@
   const audio2 = document.getElementById('audio2');
   const status1 = document.getElementById('status1');
   const status2 = document.getElementById('status2');
-  const listenCount = document.getElementById('listenCount');
-  const formSection = document.getElementById('formSection');
-
-  let finished = { audio1: false, audio2: false };
-
-  function updateProgress() {
-    const count = (finished.audio1 ? 1 : 0) + (finished.audio2 ? 1 : 0);
-    listenCount.textContent = count + ' / 2';
-    if (count === 2) {
-      formSection.classList.add('visible');
-      setTimeout(() => {
-        formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 300);
-    }
-  }
 
   audio1.addEventListener('playing', () => { status1.textContent = '再生中...'; status1.className = 'audio-status'; });
   audio2.addEventListener('playing', () => { status2.textContent = '再生中...'; status2.className = 'audio-status'; });
 
   audio1.addEventListener('ended', () => {
-    finished.audio1 = true;
     status1.textContent = '再生完了 ✓';
     status1.className = 'audio-status done';
-    updateProgress();
   });
   audio2.addEventListener('ended', () => {
-    finished.audio2 = true;
     status2.textContent = '再生完了 ✓';
     status2.className = 'audio-status done';
-    updateProgress();
   });
 
   // Form submission
